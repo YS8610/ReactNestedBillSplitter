@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/ReactNestedBillSplitter/static/css/main.7cf92d76.css",
-    "main.js": "/ReactNestedBillSplitter/static/js/main.42f0c371.js",
+    "main.js": "/ReactNestedBillSplitter/static/js/main.dc59a80b.js",
     "static/js/492.245fa4b1.chunk.js": "/ReactNestedBillSplitter/static/js/492.245fa4b1.chunk.js",
     "static/media/logo.svg": "/ReactNestedBillSplitter/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/ReactNestedBillSplitter/index.html",
     "main.7cf92d76.css.map": "/ReactNestedBillSplitter/static/css/main.7cf92d76.css.map",
-    "main.42f0c371.js.map": "/ReactNestedBillSplitter/static/js/main.42f0c371.js.map",
+    "main.dc59a80b.js.map": "/ReactNestedBillSplitter/static/js/main.dc59a80b.js.map",
     "492.245fa4b1.chunk.js.map": "/ReactNestedBillSplitter/static/js/492.245fa4b1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7cf92d76.css",
-    "static/js/main.42f0c371.js"
+    "static/js/main.dc59a80b.js"
   ]
 }

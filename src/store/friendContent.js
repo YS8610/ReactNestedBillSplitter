@@ -26,6 +26,14 @@ const friendsSlice = createSlice({
   name: "friendContent",
   initialState: intialFriends,
   reducers: {
+    resetFriends(state){
+      return [
+        {
+          friendName: "friend1" ,
+          paidInfo: [{ place: "", paidAmt: 0, comment: "", exclude: [] }],
+        },
+      ]
+    },
     addFriend(state) {
       return [
         ...state,

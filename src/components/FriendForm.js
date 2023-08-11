@@ -30,6 +30,11 @@ const FriendForm = (props) => {
     );
   };
 
+  const clearButtonHandler= (e) =>{
+    e.preventDefault();
+    dispatch( friendsSliceActions.resetFriends() )
+  }
+
   return (
     <div className={classes.div}>
       <label htmlFor="fname">Friend name: </label>
@@ -48,6 +53,8 @@ const FriendForm = (props) => {
       </button>
 
       <PaidDetail ind={props.order}/>
+
+      {props.order===friends.length-1 && <><br/><button onClick={clearButtonHandler}>Clear</button></> }
     </div>
   );
 };

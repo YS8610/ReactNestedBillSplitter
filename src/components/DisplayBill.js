@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import classes from "./displayBill.module.css";
+import toast, { Toaster } from 'react-hot-toast';
 
 const DisplayBill = (props) => {
   const friends = useSelector((state) => {
@@ -100,10 +101,54 @@ const DisplayBill = (props) => {
     fBill.push(tmpArray);
   }
 
-  const copyButtonHandler = (e)=>{
-    e.preventDefault();
+  const textBill = () => {
+    const paidC = "";
+    const str = ["Bill\n\n"];
+    for (let pC of paidContent) {
+      str.push(pC.fName + " paid\n");
+      pC.paidDetail.forEach((x) => str.push(x + "\n"));
+    }
+    let tempStr = ["\n\nTotalBill = "];
+    if (totalAmt > 0) {
+      for (let i = 0, n = totalbill.length; i < n; i++) {
+        if (i === 0) tempStr.push("$" + +totalbill[i]);
+        else tempStr.push("+$" + +totalbill[i]);
+      }
+      tempStr.push(" = $" + totalAmt + "\n");
+    }
+    str.push(tempStr.join(""));
+    let tempStr1 = [];
+    let sum = 0;
+    for (let i = 0, n = friends.length; i < n; i++) {
+      tempStr1.push("\n" + friends[i].friendName + " = ");
+      fBill[i].forEach((x, index) => {
+        if (+x >= 0) {
+          if (index === 0) tempStr1.push("$" + +x);
+          else tempStr1.push("+$" + +x);
+        } else {
+          tempStr1.push("-$" + +x * -1);
+        }
+      });
+      if (fBill[i].length > 0) {
+        sum = fBill[i].reduce((m1, m2) => parseFloat(m1) + parseFloat(m2));
+      }
+      tempStr1.push(" = " + USDollar.format(sum));
+    }
+    str.push(tempStr1.join(""));
+    str.push("\n\ngenerated from https://ys8610.github.io/ReactNestedBillSplitter/")
+    return str;
+  };
 
-  }
+  const copyButtonHandler = async (e) => {
+    e.preventDefault();
+    try{
+      await navigator.clipboard.writeText( textBill().join("") );
+      toast.success('Copied!');
+    }
+    catch (e){
+      toast.error(`Error: ${e.message}`);
+    }
+  };
 
   return (
     <div className={classes.div}>
@@ -152,15 +197,19 @@ const DisplayBill = (props) => {
                 );
               })}{" "}
               ={" "}
-              {USDollar.format(
-                fBill[index].reduce((m1, m2) => parseFloat(m1) + parseFloat(m2))
-              )}
+              {fBill[index].length > 0 &&
+                USDollar.format(
+                  fBill[index].reduce(
+                    (m1, m2) => parseFloat(m1) + parseFloat(m2)
+                  )
+                )}
               <br />
             </span>
           );
         })}
       </div>
       <button onClick={copyButtonHandler}>Copy</button>
+      <Toaster/>
     </div>
   );
 };

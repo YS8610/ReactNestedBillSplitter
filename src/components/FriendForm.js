@@ -3,7 +3,7 @@ import { friendsSliceActions } from "../store/friendContent";
 import PaidDetail from "./PaidDetail";
 import classes from "./friendForm.module.css";
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
-import { Icon, IconButton } from "@mui/material";
+import { IconButton, TextField} from "@mui/material";
 import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
 import PersonRemoveSharpIcon from '@mui/icons-material/PersonRemoveSharp';
 
@@ -41,8 +41,9 @@ const FriendForm = (props) => {
 
   return (
     <div className={classes.div}>
-      <label htmlFor="fname">Friend name: </label>
-      <input
+      <TextField
+        label="Friend Name"
+        variant="outlined"
         type="text"
         id={"fname" + props.order}
         name="fname"

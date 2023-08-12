@@ -4,7 +4,7 @@ import Exclude from "./Exclude";
 import classes from "./paidDetail.module.css";
 import AddSharpIcon from '@mui/icons-material/AddSharp';
 import RemoveSharpIcon from '@mui/icons-material/RemoveSharp';
-import { IconButton } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 
 const PaidDetail = (props) => {
   const dispatch = useDispatch();
@@ -27,31 +27,34 @@ const PaidDetail = (props) => {
     );
   };
 
-  const placeFormHandler = (e) => {
+  const placeFormHandler = (e,index) => {
     dispatch(
       friendsSliceActions.setPaidDetailPlace({
         ind: props.ind,
-        ind1: e.target.getAttribute("data-index"),
+        ind1: index,
+        // ind1: e.target.getAttribute("data-index"),
         place: e.target.value,
       })
     );
   };
 
-  const commentFormHandler = (e) => {
+  const commentFormHandler = (e,index) => {
     dispatch(
       friendsSliceActions.setPaidDetailComment({
         ind: props.ind,
-        ind1: e.target.getAttribute("data-index"),
+        ind1: index,
+        // ind1: e.target.getAttribute("data-index"),
         comment: e.target.value,
       })
     );
   };
 
-  const paidAmtFormHandler=(e)=>{
+  const paidAmtFormHandler=(e,index)=>{
     dispatch(
       friendsSliceActions.setPaidDetailAmt({
         ind: props.ind,
-        ind1: e.target.getAttribute("data-index"),
+        ind1: index,
+        // ind1: e.target.getAttribute("data-index"),
         paidAmt: e.target.value,
       })
     )
@@ -75,31 +78,37 @@ const PaidDetail = (props) => {
               <tr>
                 {/* input for place */}
                 <td>
-                  <input
+                  <TextField
+                    variant="outlined"
                     type="text"
+                    label="Place"
                     id={"place" + props.ind + "_" + index}
-                    onChange={placeFormHandler}
+                    onChange={(e)=>placeFormHandler(e,index)}
                     value={row.place}
                     data-index={index}
                   />
                 </td>
                 {/* input for paid amount */}
                 <td>
-                <input
+                <TextField
+                    variant="filled"
                     type="number"
+                    label="Paid Amount"
                     id={"paidAmt" + props.ind + "_" + index}
                     step=".01"
-                    onChange={paidAmtFormHandler}
+                    onChange={(e) =>paidAmtFormHandler(e,index)}
                     value={row.paidAmt}
                     data-index={index}
                   />
                 </td>
                 {/* input for comment */}
                 <td>
-                  <input
+                  <TextField
+                    variant="filled"
                     type="text"
+                    label="Comment"
                     id={"comment" + props.ind + "_" + index}
-                    onChange={commentFormHandler}
+                    onChange={(e)=>commentFormHandler(e,index)}
                     value={row.comment}
                     data-index={index}
                   />

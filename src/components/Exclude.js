@@ -46,6 +46,7 @@ const Exclude = (props) => {
             id={f.friendName + "_" + index + "_" + props.ind + "_" + props.ind1}
             onChange={(e) => checkboxArray(e, index)}
             checked={ex.includes(index) }
+            disabled={ex.length+1===friends.length && !ex.includes(index)}
           />
           <label
             htmlFor={

@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import classes from "./displayBill.module.css";
 import toast, { Toaster } from 'react-hot-toast';
+import { IconButton } from "@mui/material";
+import ContentCopySharpIcon from '@mui/icons-material/ContentCopySharp';
 
 const DisplayBill = (props) => {
   const friends = useSelector((state) => {
@@ -103,9 +105,9 @@ const DisplayBill = (props) => {
 
   const textBill = () => {
     const paidC = "";
-    const str = ["Bill\n\n"];
+    const str = ["Bill\n"];
     for (let pC of paidContent) {
-      str.push(pC.fName + " paid\n");
+      str.push("\n"+pC.fName + " paid\n");
       pC.paidDetail.forEach((x) => str.push(x + "\n"));
     }
     let tempStr = ["\n\nTotalBill = "];
@@ -138,6 +140,7 @@ const DisplayBill = (props) => {
     str.push("\n\ngenerated from https://ys8610.github.io/ReactNestedBillSplitter/")
     return str;
   };
+  console.log(textBill())
 
   const copyButtonHandler = async (e) => {
     e.preventDefault();
@@ -208,7 +211,7 @@ const DisplayBill = (props) => {
           );
         })}
       </div>
-      <button onClick={copyButtonHandler}>Copy</button>
+      <IconButton onClick={copyButtonHandler} variant="contained"><ContentCopySharpIcon/></IconButton>
       <Toaster/>
     </div>
   );

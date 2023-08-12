@@ -2,6 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
 import Exclude from "./Exclude";
 import classes from "./paidDetail.module.css";
+import AddSharpIcon from '@mui/icons-material/AddSharp';
+import RemoveSharpIcon from '@mui/icons-material/RemoveSharp';
+import { IconButton } from "@mui/material";
 
 const PaidDetail = (props) => {
   const dispatch = useDispatch();
@@ -102,15 +105,15 @@ const PaidDetail = (props) => {
                   />
                 </td>
                 <td>
-                  <button onClick={addButtonHandler}>+</button>
+                  <IconButton onClick={addButtonHandler}><AddSharpIcon/></IconButton>
                   <span>  </span>
-                  <button
+                  <IconButton
                     onClick={removeButtonHandler}
                     data-index={index}
                     disabled={friends[props.ind].paidInfo.length <= 1}
                   >
-                    -
-                  </button>
+                    <RemoveSharpIcon/>
+                  </IconButton>
                 </td>
                 <td>
                   <Exclude ind={props.ind} ind1={index} />

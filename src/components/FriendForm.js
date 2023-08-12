@@ -2,6 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
 import PaidDetail from "./PaidDetail";
 import classes from "./friendForm.module.css";
+import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
+import { Icon, IconButton } from "@mui/material";
+import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
+import PersonRemoveSharpIcon from '@mui/icons-material/PersonRemoveSharp';
 
 const FriendForm = (props) => {
   const dispatch = useDispatch();
@@ -46,15 +50,15 @@ const FriendForm = (props) => {
         onChange={formChangeHandler}
       />
       <span> </span>
-      <button onClick={addButtonHandler}>+</button>
+      <IconButton onClick={addButtonHandler}><PersonAddSharpIcon/></IconButton>
       <span> </span>
-      <button onClick={removeButtonHandler} disabled={friends.length <= 1}>
-        -
-      </button>
+      <IconButton onClick={removeButtonHandler} disabled={friends.length <= 1}>
+      <PersonRemoveSharpIcon/>
+      </IconButton>
 
       <PaidDetail ind={props.order}/>
 
-      {props.order===friends.length-1 && <><br/><button onClick={clearButtonHandler}>Clear</button></> }
+      {props.order===friends.length-1 && <><br/><IconButton variant="contained" onClick={clearButtonHandler}><DeleteSharpIcon/></IconButton></> }
     </div>
   );
 };

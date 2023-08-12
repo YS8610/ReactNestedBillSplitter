@@ -2,11 +2,10 @@ import React from "react";
 import classes from "./exclude.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 const Exclude = (props) => {
-
   const friends = useSelector((state) => {
     return state.friendsSlice;
   });
@@ -35,7 +34,6 @@ const Exclude = (props) => {
     }
   };
 
-
   return (
     <>
       {friends.map((f, index) => (
@@ -46,15 +44,25 @@ const Exclude = (props) => {
             labelPlacement="bottom"
             control={
               <Checkbox
-              key={index + "_" + props.ind + "_" + props.ind1}
-              // type="checkbox"
-              name={f.friendName + "_" + props.ind + "_" + props.ind1}
-              value={index}
-              id={f.friendName + "_" + index + "_" + props.ind + "_" + props.ind1}
-              onChange={(e) => checkboxArray(e, index)}
-              checked={ex.includes(index) }
-              disabled={ex.length+1===friends.length && !ex.includes(index)}
-            />
+                key={index + "_" + props.ind + "_" + props.ind1}
+                // type="checkbox"
+                name={f.friendName + "_" + props.ind + "_" + props.ind1}
+                value={index}
+                id={
+                  f.friendName +
+                  "_" +
+                  index +
+                  "_" +
+                  props.ind +
+                  "_" +
+                  props.ind1
+                }
+                onChange={(e) => checkboxArray(e, index)}
+                checked={ex.includes(index)}
+                disabled={
+                  ex.length + 1 === friends.length && !ex.includes(index)
+                }
+              />
             }
           />
         </span>

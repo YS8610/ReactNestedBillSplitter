@@ -104,7 +104,6 @@ const DisplayBill = (props) => {
   }
 
   const textBill = () => {
-    const paidC = "";
     const str = ["Bill\n"];
     for (let pC of paidContent) {
       str.push("\n"+pC.fName + " paid\n");

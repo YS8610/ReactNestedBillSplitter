@@ -22,8 +22,7 @@ const DisplayBill = (props) => {
     for (let paid of f.paidInfo) {
       if (paid.paidAmt > 0) {
         cont.paidDetail.push(
-          "$" +
-            parseFloat(paid.paidAmt) +
+          USDollar.format(parseFloat(paid.paidAmt)) +
             " @" +
             paid.place +
             " for " +
@@ -112,10 +111,12 @@ const DisplayBill = (props) => {
     let tempStr = ["\n\nTotalBill = "];
     if (totalAmt > 0) {
       for (let i = 0, n = totalbill.length; i < n; i++) {
-        if (i === 0) tempStr.push("$" + +totalbill[i]);
-        else tempStr.push("+$" + +totalbill[i]);
+        // if (i === 0) tempStr.push("$" + +totalbill[i]);
+        if (i === 0) tempStr.push( USDollar.format(parseFloat(+totalbill[i])) );
+        // else tempStr.push("+$" + +totalbill[i]);
+        else tempStr.push("+" + USDollar.format(parseFloat(+totalbill[i])));
       }
-      tempStr.push(" = $" + totalAmt + "\n");
+      tempStr.push(" = " + USDollar.format(parseFloat(+totalAmt)) + "\n");
     }
     str.push(tempStr.join(""));
     let tempStr1 = [];
@@ -125,9 +126,12 @@ const DisplayBill = (props) => {
       fBill[i].forEach((x, index) => {
         if (+x >= 0) {
           if (index === 0) tempStr1.push("$" + +x);
+          // if (index === 0) tempStr1.push(USDollar.format(parseFloat(+x)));
           else tempStr1.push("+$" + +x);
+          // else tempStr1.push("+" + USDollar.format(parseFloat(+x)));
         } else {
           tempStr1.push("-$" + +x * -1);
+          // tempStr1.push( USDollar.format(parseFloat(+x)));
         }
       });
       if (fBill[i].length > 0) {
@@ -177,9 +181,9 @@ const DisplayBill = (props) => {
         <b>TotalBill</b> ={" "}
         {totalAmt > 0 &&
           totalbill.map((x, index) =>
-            index > 0 ? <>+${+x}</> : <>${+x}</>
+            index > 0 ? <>+{USDollar.format(parseFloat(+x))}</> : <>{USDollar.format(parseFloat(+x))}</>
           )}{" "}
-        = ${totalAmt}
+        = {USDollar.format(parseFloat(totalAmt))}
       </div>
       <br />
       {/* <pre>{JSON.stringify(fBill, null, "\t")}</pre> */}

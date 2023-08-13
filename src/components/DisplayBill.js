@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import classes from "./displayBill.module.css";
-import toast, { Toaster } from 'react-hot-toast';
-import { IconButton } from "@mui/material";
-import ContentCopySharpIcon from '@mui/icons-material/ContentCopySharp';
+import toast, { Toaster } from "react-hot-toast";
+import { IconButton, Tooltip } from "@mui/material";
+import ContentCopySharpIcon from "@mui/icons-material/ContentCopySharp";
 
 const DisplayBill = (props) => {
   const friends = useSelector((state) => {
@@ -106,7 +106,7 @@ const DisplayBill = (props) => {
   const textBill = () => {
     const str = ["Bill\n"];
     for (let pC of paidContent) {
-      str.push("\n"+pC.fName + " paid\n");
+      str.push("\n" + pC.fName + " paid\n");
       pC.paidDetail.forEach((x) => str.push(x + "\n"));
     }
     let tempStr = ["\n\nTotalBill = "];
@@ -136,18 +136,19 @@ const DisplayBill = (props) => {
       tempStr1.push(" = " + USDollar.format(sum));
     }
     str.push(tempStr1.join(""));
-    str.push("\n\ngenerated from https://ys8610.github.io/ReactNestedBillSplitter/")
+    str.push(
+      "\n\ngenerated from https://ys8610.github.io/ReactNestedBillSplitter/"
+    );
     return str;
   };
-  console.log(textBill())
+  console.log(textBill());
 
   const copyButtonHandler = async (e) => {
     e.preventDefault();
-    try{
-      await navigator.clipboard.writeText( textBill().join("") );
-      toast.success('Copied!');
-    }
-    catch (e){
+    try {
+      await navigator.clipboard.writeText(textBill().join(""));
+      toast.success("Copied!");
+    } catch (e) {
       toast.error(`Error: ${e.message}`);
     }
   };
@@ -210,8 +211,12 @@ const DisplayBill = (props) => {
           );
         })}
       </div>
-      <IconButton onClick={copyButtonHandler} variant="contained"><ContentCopySharpIcon/></IconButton>
-      <Toaster/>
+      <Tooltip title="copy" arrow>
+        <IconButton onClick={copyButtonHandler} variant="contained">
+          <ContentCopySharpIcon />
+        </IconButton>
+      </Tooltip>
+      <Toaster />
     </div>
   );
 };

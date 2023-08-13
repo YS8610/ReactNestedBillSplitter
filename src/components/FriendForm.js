@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
 import PaidDetail from "./PaidDetail";
 import classes from "./friendForm.module.css";
-import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
-import { IconButton, TextField} from "@mui/material";
-import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
-import PersonRemoveSharpIcon from '@mui/icons-material/PersonRemoveSharp';
+import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
+import { IconButton, TextField, Tooltip } from "@mui/material";
+import PersonAddSharpIcon from "@mui/icons-material/PersonAddSharp";
+import PersonRemoveSharpIcon from "@mui/icons-material/PersonRemoveSharp";
 
 const FriendForm = (props) => {
   const dispatch = useDispatch();
@@ -34,10 +34,10 @@ const FriendForm = (props) => {
     );
   };
 
-  const clearButtonHandler= (e) =>{
+  const clearButtonHandler = (e) => {
     e.preventDefault();
-    dispatch( friendsSliceActions.resetFriends() )
-  }
+    dispatch(friendsSliceActions.resetFriends());
+  };
 
   return (
     <div className={classes.div}>
@@ -51,15 +51,26 @@ const FriendForm = (props) => {
         onChange={formChangeHandler}
       />
       <span> </span>
-      <IconButton onClick={addButtonHandler}><PersonAddSharpIcon/></IconButton>
+      <IconButton onClick={addButtonHandler}>
+        <PersonAddSharpIcon />
+      </IconButton>
       <span> </span>
       <IconButton onClick={removeButtonHandler} disabled={friends.length <= 1}>
-      <PersonRemoveSharpIcon/>
+        <PersonRemoveSharpIcon />
       </IconButton>
 
-      <PaidDetail ind={props.order}/>
+      <PaidDetail ind={props.order} />
 
-      {props.order===friends.length-1 && <><br/><IconButton variant="contained" onClick={clearButtonHandler}><DeleteSharpIcon/></IconButton></> }
+      {props.order === friends.length - 1 && (
+        <>
+          <br />
+          <Tooltip title="Clear" arrow>
+            <IconButton variant="contained" onClick={clearButtonHandler}>
+              <DeleteSharpIcon />
+            </IconButton>
+          </Tooltip>
+        </>
+      )}
     </div>
   );
 };

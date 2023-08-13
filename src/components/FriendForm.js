@@ -3,7 +3,7 @@ import { friendsSliceActions } from "../store/friendContent";
 import PaidDetail from "./PaidDetail";
 import classes from "./friendForm.module.css";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { IconButton, TextField, Tooltip } from "@mui/material";
+import { IconButton, TextField, Tooltip, InputAdornment } from "@mui/material";
 import PersonAddSharpIcon from "@mui/icons-material/PersonAddSharp";
 import PersonRemoveSharpIcon from "@mui/icons-material/PersonRemoveSharp";
 
@@ -49,16 +49,22 @@ const FriendForm = (props) => {
         name="fname"
         value={props.data.friendName}
         onChange={formChangeHandler}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={addButtonHandler}>
+                <PersonAddSharpIcon />
+              </IconButton>
+              <IconButton
+                onClick={removeButtonHandler}
+                disabled={friends.length <= 1}
+              >
+                <PersonRemoveSharpIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
-      <span> </span>
-      <IconButton onClick={addButtonHandler}>
-        <PersonAddSharpIcon />
-      </IconButton>
-      <span> </span>
-      <IconButton onClick={removeButtonHandler} disabled={friends.length <= 1}>
-        <PersonRemoveSharpIcon />
-      </IconButton>
-
       <PaidDetail ind={props.order} />
 
       {props.order === friends.length - 1 && (

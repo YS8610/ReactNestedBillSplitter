@@ -2,9 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
 import Exclude from "./Exclude";
 import classes from "./paidDetail.module.css";
-import AddSharpIcon from '@mui/icons-material/AddSharp';
-import RemoveSharpIcon from '@mui/icons-material/RemoveSharp';
-import { IconButton, TextField } from "@mui/material";
+import AddSharpIcon from "@mui/icons-material/AddSharp";
+import RemoveSharpIcon from "@mui/icons-material/RemoveSharp";
+import { IconButton, TextField, InputAdornment } from "@mui/material";
+import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
 
 const PaidDetail = (props) => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const PaidDetail = (props) => {
     );
   };
 
-  const placeFormHandler = (e,index) => {
+  const placeFormHandler = (e, index) => {
     dispatch(
       friendsSliceActions.setPaidDetailPlace({
         ind: props.ind,
@@ -38,7 +39,7 @@ const PaidDetail = (props) => {
     );
   };
 
-  const commentFormHandler = (e,index) => {
+  const commentFormHandler = (e, index) => {
     dispatch(
       friendsSliceActions.setPaidDetailComment({
         ind: props.ind,
@@ -49,7 +50,7 @@ const PaidDetail = (props) => {
     );
   };
 
-  const paidAmtFormHandler=(e,index)=>{
+  const paidAmtFormHandler = (e, index) => {
     dispatch(
       friendsSliceActions.setPaidDetailAmt({
         ind: props.ind,
@@ -57,8 +58,8 @@ const PaidDetail = (props) => {
         // ind1: e.target.getAttribute("data-index"),
         paidAmt: e.target.value,
       })
-    )
-  }
+    );
+  };
 
   return (
     <div className={classes.div}>
@@ -83,22 +84,29 @@ const PaidDetail = (props) => {
                     type="text"
                     label="Place"
                     id={"place" + props.ind + "_" + index}
-                    onChange={(e)=>placeFormHandler(e,index)}
+                    onChange={(e) => placeFormHandler(e, index)}
                     value={row.place}
                     data-index={index}
                   />
                 </td>
                 {/* input for paid amount */}
                 <td>
-                <TextField
+                  <TextField
                     variant="filled"
                     type="number"
                     label="Paid Amount"
                     id={"paidAmt" + props.ind + "_" + index}
                     step=".01"
-                    onChange={(e) =>paidAmtFormHandler(e,index)}
+                    onChange={(e) => paidAmtFormHandler(e, index)}
                     value={row.paidAmt}
                     data-index={index}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AttachMoneySharpIcon fontSize="small" />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </td>
                 {/* input for comment */}
@@ -108,20 +116,22 @@ const PaidDetail = (props) => {
                     type="text"
                     label="Comment"
                     id={"comment" + props.ind + "_" + index}
-                    onChange={(e)=>commentFormHandler(e,index)}
+                    onChange={(e) => commentFormHandler(e, index)}
                     value={row.comment}
                     data-index={index}
                   />
                 </td>
                 <td>
-                  <IconButton onClick={addButtonHandler}><AddSharpIcon/></IconButton>
-                  <span>  </span>
+                  <IconButton onClick={addButtonHandler}>
+                    <AddSharpIcon />
+                  </IconButton>
+                  <span> </span>
                   <IconButton
                     onClick={removeButtonHandler}
                     data-index={index}
                     disabled={friends[props.ind].paidInfo.length <= 1}
                   >
-                    <RemoveSharpIcon/>
+                    <RemoveSharpIcon />
                   </IconButton>
                 </td>
                 <td>

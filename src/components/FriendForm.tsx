@@ -1,19 +1,24 @@
 import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
-import {RootState} from "../store/indexStore";
+import { RootState } from "../store/indexStore";
 import PaidDetail from "./PaidDetail";
 import classes from "./friendForm.module.css";
-import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { IconButton, TextField, Tooltip, InputAdornment } from "@mui/material";
+import {
+  IconButton,
+  TextField,
+  Tooltip,
+  InputAdornment,
+  Button,  
+} from "@mui/material";
 import PersonAddSharpIcon from "@mui/icons-material/PersonAddSharp";
 import PersonRemoveSharpIcon from "@mui/icons-material/PersonRemoveSharp";
-import {Friend} from "../model";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Friend } from "../model";
 
-
-const FriendForm: React.FC<{order:number,data:Friend}> = (props) => {
+const FriendForm: React.FC<{ order: number; data: Friend }> = (props) => {
   const dispatch = useDispatch();
 
-  const friends = useSelector((state:RootState) => {
+  const friends = useSelector((state: RootState) => {
     return state.friendsSlice;
   });
 
@@ -41,8 +46,6 @@ const FriendForm: React.FC<{order:number,data:Friend}> = (props) => {
     e.preventDefault();
     dispatch(friendsSliceActions.resetFriends());
   };
-
-
 
   return (
     <div className={classes.div}>
@@ -77,9 +80,16 @@ const FriendForm: React.FC<{order:number,data:Friend}> = (props) => {
           <br />
           <Tooltip title="Clear" arrow>
             {/* <IconButton variant="contained" onClick={clearButtonHandler}> */}
-            <IconButton onClick={clearButtonHandler}>
+            {/* <IconButton onClick={clearButtonHandler}>
               <DeleteSharpIcon />
-            </IconButton>
+            </IconButton> */}
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              onClick={clearButtonHandler}
+            >
+              Clear
+            </Button>
           </Tooltip>
         </>
       )}

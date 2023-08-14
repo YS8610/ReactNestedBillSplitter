@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import classes from "./displayBill.module.css";
 import toast, { Toaster } from "react-hot-toast";
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip, Button } from "@mui/material";
 import ContentCopySharpIcon from "@mui/icons-material/ContentCopySharp";
 import { RootState } from "../store/indexStore";
 import { Friend } from "../model";
@@ -19,13 +19,13 @@ interface Flatten {
   ex: string;
 }
 
-interface GrpEX{
+interface GrpEX {
   [key: string]: {
     fname: string;
     place: string;
     paid: string;
     comt: string;
-  }[]
+  }[];
 }
 
 const DisplayBill: React.FC<{}> = (props) => {
@@ -58,11 +58,11 @@ const DisplayBill: React.FC<{}> = (props) => {
   }
   let totalAmt = 0;
   if (totalbill.length > 0)
-    totalAmt = totalbill.reduce<number>(
-      (m1, m2) => {return parseFloat(""+m1) + parseFloat(m2)} , 0
-    );
+    totalAmt = totalbill.reduce<number>((m1, m2) => {
+      return parseFloat("" + m1) + parseFloat(m2);
+    }, 0);
 
-  const flattenStructure:Flatten[] = [];
+  const flattenStructure: Flatten[] = [];
   for (let f of friends) {
     for (let pay of f.paidInfo) {
       if (+pay.paidAmt > 0) {
@@ -73,18 +73,20 @@ const DisplayBill: React.FC<{}> = (props) => {
           comt: pay.comment,
           ex:
             pay.exclude.length > 0
-              ? pay.exclude.reduce<string>((m1, m2) => {return m1 + "," + m2}, "")
+              ? pay.exclude.reduce<string>((m1, m2) => {
+                  return m1 + "," + m2;
+                }, "")
               : " ",
         });
       }
     }
   }
-  const grpEx:GrpEX = flattenStructure.reduce<GrpEX>((x, y) => {
+  const grpEx: GrpEX = flattenStructure.reduce<GrpEX>((x, y) => {
     (x[y.ex] = x[y.ex] || []).push(y);
     return x;
   }, {});
 
-  const grpExCombine: {[key: string]:number} = {};
+  const grpExCombine: { [key: string]: number } = {};
   Object.keys(grpEx).forEach((k) => {
     let sum = 0;
     let tArray = (k.trim() + "").split(",");
@@ -99,8 +101,10 @@ const DisplayBill: React.FC<{}> = (props) => {
   });
 
   const friendCountArray = [...Array(friends.length).keys()];
-  const allFriend = friendCountArray.reduce<string>((m1, m2) => {return m1 + "," + m2}, "");
-  let grpInCombine: {[key: string]:number} = {};
+  const allFriend = friendCountArray.reduce<string>((m1, m2) => {
+    return m1 + "," + m2;
+  }, "");
+  let grpInCombine: { [key: string]: number } = {};
   for (const k in grpExCombine) {
     let tempA = ("" + k.trim()).split(",");
     if (k === " " || tempA.length === friends.length) {
@@ -109,12 +113,14 @@ const DisplayBill: React.FC<{}> = (props) => {
       else grpInCombine[allFriend] = grpExCombine[k];
     } else {
       let diff = friendCountArray.filter((x) => !tempA.includes("" + x));
-      let str:string = diff.reduce<string>((m1, m2) => {return m1 + "," + m2}, "");
+      let str: string = diff.reduce<string>((m1, m2) => {
+        return m1 + "," + m2;
+      }, "");
       grpInCombine[str] = grpExCombine[k];
     }
   }
 
-  const fBill:string[][] = [];
+  const fBill: string[][] = [];
   for (let i = 0, n = friends.length; i < n; i++) {
     let tmpArray = [];
     for (let paid of friends[i].paidInfo) {
@@ -122,7 +128,7 @@ const DisplayBill: React.FC<{}> = (props) => {
     }
     for (const k in grpInCombine) {
       let a = k.split(",");
-      if (a.includes("" + i)) tmpArray.push(""+grpInCombine[k]);
+      if (a.includes("" + i)) tmpArray.push("" + grpInCombine[k]);
     }
     fBill.push(tmpArray);
   }
@@ -160,7 +166,9 @@ const DisplayBill: React.FC<{}> = (props) => {
         }
       });
       if (fBill[i].length > 0) {
-        sum = (fBill[i]).reduce<number>((m1, m2) => {return parseFloat(""+m1) + parseFloat(m2)},0);
+        sum = fBill[i].reduce<number>((m1, m2) => {
+          return parseFloat("" + m1) + parseFloat(m2);
+        }, 0);
       }
       tempStr1.push(" = " + USDollar.format(sum));
     }
@@ -235,9 +243,9 @@ const DisplayBill: React.FC<{}> = (props) => {
               ={" "}
               {fBill[index].length > 0 &&
                 USDollar.format(
-                  fBill[index].reduce(
-                    (m1, m2) => {return parseFloat(""+m1) + parseFloat(""+m2)},0
-                  )
+                  fBill[index].reduce((m1, m2) => {
+                    return parseFloat("" + m1) + parseFloat("" + m2);
+                  }, 0)
                 )}
               <br />
             </span>
@@ -246,9 +254,16 @@ const DisplayBill: React.FC<{}> = (props) => {
       </div>
       <Tooltip title="copy" arrow>
         {/* <IconButton onClick={copyButtonHandler} variant="contained"> */}
-        <IconButton onClick={copyButtonHandler} >
+        {/* <IconButton onClick={copyButtonHandler}>
           <ContentCopySharpIcon />
-        </IconButton>
+        </IconButton> */}
+        <Button
+          variant="outlined"
+          startIcon={<ContentCopySharpIcon />}
+          onClick={copyButtonHandler}
+        >
+          Copy
+        </Button>
       </Tooltip>
       <Toaster />
     </div>

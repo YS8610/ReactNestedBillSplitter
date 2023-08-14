@@ -1,34 +1,37 @@
 import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
+import {RootState} from "../store/indexStore";
 import Exclude from "./Exclude";
 import classes from "./paidDetail.module.css";
 import AddSharpIcon from "@mui/icons-material/AddSharp";
 import RemoveSharpIcon from "@mui/icons-material/RemoveSharp";
 import { IconButton, TextField, InputAdornment } from "@mui/material";
 import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
+import { Friend } from "../model";
 
-const PaidDetail = (props) => {
+const PaidDetail:React.FC<{ind:number}> = (props) => {
   const dispatch = useDispatch();
 
-  const friends = useSelector((state) => {
-    return state.friendsSlice;
+  const friends:Friend[] = useSelector((state:RootState) => {
+      return state.friendsSlice;
   });
 
-  const addButtonHandler = (e) => {
+  const addButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(friendsSliceActions.addPaidDetail({ ind: props.ind }));
   };
 
-  const removeButtonHandler = (e) => {
+  const removeButtonHandler = (e: React.MouseEvent<HTMLButtonElement>,index:number) => {
     dispatch(
       friendsSliceActions.removePaidDetail({
         ind: props.ind,
-        ind1: e.target.getAttribute("data-index"),
+        // ind1: e.target.getAttribute("data-index"),
+        ind1: index,
       })
     );
   };
 
-  const placeFormHandler = (e, index) => {
+  const placeFormHandler = (e: React.ChangeEvent<HTMLInputElement>, index:number) => {
     dispatch(
       friendsSliceActions.setPaidDetailPlace({
         ind: props.ind,
@@ -39,7 +42,7 @@ const PaidDetail = (props) => {
     );
   };
 
-  const commentFormHandler = (e, index) => {
+  const commentFormHandler = (e: React.ChangeEvent<HTMLInputElement>, index:number) => {
     dispatch(
       friendsSliceActions.setPaidDetailComment({
         ind: props.ind,
@@ -50,7 +53,7 @@ const PaidDetail = (props) => {
     );
   };
 
-  const paidAmtFormHandler = (e, index) => {
+  const paidAmtFormHandler = (e : React.ChangeEvent<HTMLInputElement>, index:number) => {
     dispatch(
       friendsSliceActions.setPaidDetailAmt({
         ind: props.ind,
@@ -84,7 +87,7 @@ const PaidDetail = (props) => {
                     type="text"
                     label="Place"
                     id={"place" + props.ind + "_" + index}
-                    onChange={(e) => placeFormHandler(e, index)}
+                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => placeFormHandler(e, index)}
                     value={row.place}
                     data-index={index}
                   />
@@ -96,8 +99,8 @@ const PaidDetail = (props) => {
                     type="number"
                     label="Paid Amount"
                     id={"paidAmt" + props.ind + "_" + index}
-                    step=".01"
-                    onChange={(e) => paidAmtFormHandler(e, index)}
+                    // step=".01"
+                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => paidAmtFormHandler(e, index)}
                     value={row.paidAmt}
                     data-index={index}
                     InputProps={{
@@ -116,7 +119,7 @@ const PaidDetail = (props) => {
                     type="text"
                     label="Comment"
                     id={"comment" + props.ind + "_" + index}
-                    onChange={(e) => commentFormHandler(e, index)}
+                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => commentFormHandler(e, index)}
                     value={row.comment}
                     data-index={index}
                   />
@@ -127,7 +130,7 @@ const PaidDetail = (props) => {
                   </IconButton>
                   <span> </span>
                   <IconButton
-                    onClick={removeButtonHandler}
+                    onClick={(e) => removeButtonHandler(e,index)}
                     data-index={index}
                     disabled={friends[props.ind].paidInfo.length <= 1}
                   >

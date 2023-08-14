@@ -1,12 +1,13 @@
-import React from "react";
-import classes from "./exclude.module.css";
+import "./exclude.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
+import {RootState} from "../store/indexStore";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { Friend } from "../model";
 
-const Exclude = (props) => {
-  const friends = useSelector((state) => {
+const Exclude:React.FC<{ind:number,ind1:number}> = (props) => {
+  const friends:Friend[] = useSelector((state:RootState) => {
     return state.friendsSlice;
   });
 
@@ -14,7 +15,8 @@ const Exclude = (props) => {
 
   const dispatch = useDispatch();
 
-  const checkboxArray = (e, pos) => {
+  const checkboxArray = (e: React.ChangeEvent<HTMLInputElement>, pos:number) => {
+    
     if (e.target.checked) {
       dispatch(
         friendsSliceActions.addPaidDetailExclude({
@@ -37,7 +39,7 @@ const Exclude = (props) => {
   return (
     <>
       {friends.map((f, index) => (
-        <span className={classes.span}>
+        <span >
           <FormControlLabel
             value={index}
             label={f.friendName}

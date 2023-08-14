@@ -1,12 +1,35 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import classes from "./displayBill.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { IconButton, Tooltip } from "@mui/material";
 import ContentCopySharpIcon from "@mui/icons-material/ContentCopySharp";
+import { RootState } from "../store/indexStore";
+import { Friend } from "../model";
 
-const DisplayBill = (props) => {
-  const friends = useSelector((state) => {
+interface Content {
+  fName: string;
+  paidDetail: string[];
+}
+
+interface Flatten {
+  fname: string;
+  place: string;
+  paid: string;
+  comt: string;
+  ex: string;
+}
+
+interface GrpEX{
+  [key: string]: {
+    fname: string;
+    place: string;
+    paid: string;
+    comt: string;
+  }[]
+}
+
+const DisplayBill: React.FC<{}> = (props) => {
+  const friends: Friend[] = useSelector((state: RootState) => {
     return state.friendsSlice;
   });
 
@@ -15,12 +38,12 @@ const DisplayBill = (props) => {
     currency: "USD",
   });
 
-  const paidContent = [];
-  const totalbill = [];
+  const paidContent: Content[] = [];
+  const totalbill: string[] = [];
   for (let f of friends) {
-    const cont = { fName: f.friendName, paidDetail: [] };
+    const cont: Content = { fName: f.friendName, paidDetail: [] };
     for (let paid of f.paidInfo) {
-      if (paid.paidAmt > 0) {
+      if (+paid.paidAmt > 0) {
         cont.paidDetail.push(
           USDollar.format(parseFloat(paid.paidAmt)) +
             " @" +
@@ -35,12 +58,14 @@ const DisplayBill = (props) => {
   }
   let totalAmt = 0;
   if (totalbill.length > 0)
-    totalAmt = totalbill.reduce((m1, m2) => parseFloat(m1) + parseFloat(m2));
+    totalAmt = totalbill.reduce<number>(
+      (m1, m2) => {return parseFloat(""+m1) + parseFloat(m2)} , 0
+    );
 
-  const flattenStructure = [];
+  const flattenStructure:Flatten[] = [];
   for (let f of friends) {
     for (let pay of f.paidInfo) {
-      if (pay.paidAmt > 0) {
+      if (+pay.paidAmt > 0) {
         flattenStructure.push({
           fname: f.friendName,
           place: pay.place,
@@ -48,18 +73,18 @@ const DisplayBill = (props) => {
           comt: pay.comment,
           ex:
             pay.exclude.length > 0
-              ? pay.exclude.reduce((m1, m2) => m1 + "," + m2)
+              ? pay.exclude.reduce<string>((m1, m2) => {return m1 + "," + m2}, "")
               : " ",
         });
       }
     }
   }
-  const grpEx = flattenStructure.reduce((x, y) => {
+  const grpEx:GrpEX = flattenStructure.reduce<GrpEX>((x, y) => {
     (x[y.ex] = x[y.ex] || []).push(y);
     return x;
   }, {});
 
-  const grpExCombine = {};
+  const grpExCombine: {[key: string]:number} = {};
   Object.keys(grpEx).forEach((k) => {
     let sum = 0;
     let tArray = (k.trim() + "").split(",");
@@ -74,8 +99,8 @@ const DisplayBill = (props) => {
   });
 
   const friendCountArray = [...Array(friends.length).keys()];
-  const allFriend = friendCountArray.reduce((m1, m2) => m1 + "," + m2);
-  let grpInCombine = {};
+  const allFriend = friendCountArray.reduce<string>((m1, m2) => {return m1 + "," + m2}, "");
+  let grpInCombine: {[key: string]:number} = {};
   for (const k in grpExCombine) {
     let tempA = ("" + k.trim()).split(",");
     if (k === " " || tempA.length === friends.length) {
@@ -84,12 +109,12 @@ const DisplayBill = (props) => {
       else grpInCombine[allFriend] = grpExCombine[k];
     } else {
       let diff = friendCountArray.filter((x) => !tempA.includes("" + x));
-      let str = diff.reduce((m1, m2) => m1 + "," + m2);
+      let str:string = diff.reduce<string>((m1, m2) => {return m1 + "," + m2}, "");
       grpInCombine[str] = grpExCombine[k];
     }
   }
 
-  const fBill = [];
+  const fBill:string[][] = [];
   for (let i = 0, n = friends.length; i < n; i++) {
     let tmpArray = [];
     for (let paid of friends[i].paidInfo) {
@@ -97,7 +122,7 @@ const DisplayBill = (props) => {
     }
     for (const k in grpInCombine) {
       let a = k.split(",");
-      if (a.includes("" + i)) tmpArray.push(grpInCombine[k]);
+      if (a.includes("" + i)) tmpArray.push(""+grpInCombine[k]);
     }
     fBill.push(tmpArray);
   }
@@ -112,18 +137,18 @@ const DisplayBill = (props) => {
     if (totalAmt > 0) {
       for (let i = 0, n = totalbill.length; i < n; i++) {
         // if (i === 0) tempStr.push("$" + +totalbill[i]);
-        if (i === 0) tempStr.push( USDollar.format(parseFloat(+totalbill[i])) );
+        if (i === 0) tempStr.push(USDollar.format(parseFloat(totalbill[i])));
         // else tempStr.push("+$" + +totalbill[i]);
-        else tempStr.push("+" + USDollar.format(parseFloat(+totalbill[i])));
+        else tempStr.push("+" + USDollar.format(parseFloat(totalbill[i])));
       }
-      tempStr.push(" = " + USDollar.format(parseFloat(+totalAmt)) + "\n");
+      tempStr.push(" = " + USDollar.format(totalAmt) + "\n");
     }
     str.push(tempStr.join(""));
     let tempStr1 = [];
     let sum = 0;
     for (let i = 0, n = friends.length; i < n; i++) {
       tempStr1.push("\n" + friends[i].friendName + " = ");
-      fBill[i].forEach((x, index) => {
+      fBill[i].forEach((x: string, index: number) => {
         if (+x >= 0) {
           if (index === 0) tempStr1.push("$" + +x);
           // if (index === 0) tempStr1.push(USDollar.format(parseFloat(+x)));
@@ -135,7 +160,7 @@ const DisplayBill = (props) => {
         }
       });
       if (fBill[i].length > 0) {
-        sum = fBill[i].reduce((m1, m2) => parseFloat(m1) + parseFloat(m2));
+        sum = (fBill[i]).reduce<number>((m1, m2) => {return parseFloat(""+m1) + parseFloat(m2)},0);
       }
       tempStr1.push(" = " + USDollar.format(sum));
     }
@@ -147,12 +172,12 @@ const DisplayBill = (props) => {
   };
   console.log(textBill());
 
-  const copyButtonHandler = async (e) => {
+  const copyButtonHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       await navigator.clipboard.writeText(textBill().join(""));
       toast.success("Copied!");
-    } catch (e) {
+    } catch (e: any) {
       toast.error(`Error: ${e.message}`);
     }
   };
@@ -181,9 +206,13 @@ const DisplayBill = (props) => {
         <b>TotalBill</b> ={" "}
         {totalAmt > 0 &&
           totalbill.map((x, index) =>
-            index > 0 ? <>+{USDollar.format(parseFloat(+x))}</> : <>{USDollar.format(parseFloat(+x))}</>
+            index > 0 ? (
+              <>+{USDollar.format(parseFloat(x))}</>
+            ) : (
+              <>{USDollar.format(parseFloat(x))}</>
+            )
           )}{" "}
-        = {USDollar.format(parseFloat(totalAmt))}
+        = {USDollar.format(totalAmt)}
       </div>
       <br />
       {/* <pre>{JSON.stringify(fBill, null, "\t")}</pre> */}
@@ -207,7 +236,7 @@ const DisplayBill = (props) => {
               {fBill[index].length > 0 &&
                 USDollar.format(
                   fBill[index].reduce(
-                    (m1, m2) => parseFloat(m1) + parseFloat(m2)
+                    (m1, m2) => {return parseFloat(""+m1) + parseFloat(""+m2)},0
                   )
                 )}
               <br />
@@ -216,7 +245,8 @@ const DisplayBill = (props) => {
         })}
       </div>
       <Tooltip title="copy" arrow>
-        <IconButton onClick={copyButtonHandler} variant="contained">
+        {/* <IconButton onClick={copyButtonHandler} variant="contained"> */}
+        <IconButton onClick={copyButtonHandler} >
           <ContentCopySharpIcon />
         </IconButton>
       </Tooltip>

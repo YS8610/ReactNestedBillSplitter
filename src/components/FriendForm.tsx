@@ -1,31 +1,34 @@
 import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
+import {RootState} from "../store/indexStore";
 import PaidDetail from "./PaidDetail";
 import classes from "./friendForm.module.css";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import { IconButton, TextField, Tooltip, InputAdornment } from "@mui/material";
 import PersonAddSharpIcon from "@mui/icons-material/PersonAddSharp";
 import PersonRemoveSharpIcon from "@mui/icons-material/PersonRemoveSharp";
+import {Friend} from "../model";
 
-const FriendForm = (props) => {
+
+const FriendForm: React.FC<{order:number,data:Friend}> = (props) => {
   const dispatch = useDispatch();
 
-  const friends = useSelector((state) => {
+  const friends = useSelector((state:RootState) => {
     return state.friendsSlice;
   });
 
-  const removeButtonHandler = (e) => {
+  const removeButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(friendsSliceActions.removeFriend({ ind: props.order }));
   };
 
-  const addButtonHandler = (e) => {
+  const addButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     dispatch(friendsSliceActions.addFriend());
   };
 
-  const formChangeHandler = (e) => {
+  const formChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
       friendsSliceActions.setFriendName({
         change: e.target.value,
@@ -34,10 +37,12 @@ const FriendForm = (props) => {
     );
   };
 
-  const clearButtonHandler = (e) => {
+  const clearButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(friendsSliceActions.resetFriends());
   };
+
+
 
   return (
     <div className={classes.div}>
@@ -71,7 +76,8 @@ const FriendForm = (props) => {
         <>
           <br />
           <Tooltip title="Clear" arrow>
-            <IconButton variant="contained" onClick={clearButtonHandler}>
+            {/* <IconButton variant="contained" onClick={clearButtonHandler}> */}
+            <IconButton onClick={clearButtonHandler}>
               <DeleteSharpIcon />
             </IconButton>
           </Tooltip>

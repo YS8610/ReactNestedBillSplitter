@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.paidDetail{
+  margin: auto;
+  width: 80%;
+  padding: 5px;
+}

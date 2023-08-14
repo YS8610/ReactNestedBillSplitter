@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import classes from "./displayBill.module.css";
 import toast, { Toaster } from "react-hot-toast";
-import { IconButton, Tooltip } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import ContentCopySharpIcon from "@mui/icons-material/ContentCopySharp";
 
 const DisplayBill = (props) => {
@@ -112,7 +112,7 @@ const DisplayBill = (props) => {
     if (totalAmt > 0) {
       for (let i = 0, n = totalbill.length; i < n; i++) {
         // if (i === 0) tempStr.push("$" + +totalbill[i]);
-        if (i === 0) tempStr.push( USDollar.format(parseFloat(+totalbill[i])) );
+        if (i === 0) tempStr.push(USDollar.format(parseFloat(+totalbill[i])));
         // else tempStr.push("+$" + +totalbill[i]);
         else tempStr.push("+" + USDollar.format(parseFloat(+totalbill[i])));
       }
@@ -181,7 +181,11 @@ const DisplayBill = (props) => {
         <b>TotalBill</b> ={" "}
         {totalAmt > 0 &&
           totalbill.map((x, index) =>
-            index > 0 ? <>+{USDollar.format(parseFloat(+x))}</> : <>{USDollar.format(parseFloat(+x))}</>
+            index > 0 ? (
+              <>+{USDollar.format(parseFloat(+x))}</>
+            ) : (
+              <>{USDollar.format(parseFloat(+x))}</>
+            )
           )}{" "}
         = {USDollar.format(parseFloat(totalAmt))}
       </div>
@@ -216,9 +220,16 @@ const DisplayBill = (props) => {
         })}
       </div>
       <Tooltip title="copy" arrow>
-        <IconButton onClick={copyButtonHandler} variant="contained">
+        {/* <IconButton onClick={copyButtonHandler} variant="contained">
           <ContentCopySharpIcon />
-        </IconButton>
+        </IconButton> */}
+        <Button
+          variant="outlined"
+          startIcon={<ContentCopySharpIcon />}
+          onClick={copyButtonHandler}
+        >
+          Copy
+        </Button>
       </Tooltip>
       <Toaster />
     </div>

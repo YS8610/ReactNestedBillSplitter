@@ -2,8 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { friendsSliceActions } from "../store/friendContent";
 import PaidDetail from "./PaidDetail";
 import classes from "./friendForm.module.css";
-import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import { IconButton, TextField, Tooltip, InputAdornment } from "@mui/material";
+import { Button} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddSharpIcon from "@mui/icons-material/PersonAddSharp";
 import PersonRemoveSharpIcon from "@mui/icons-material/PersonRemoveSharp";
 
@@ -71,9 +72,16 @@ const FriendForm = (props) => {
         <>
           <br />
           <Tooltip title="Clear" arrow>
-            <IconButton variant="contained" onClick={clearButtonHandler}>
+            {/* <IconButton variant="contained" onClick={clearButtonHandler}>
               <DeleteSharpIcon />
-            </IconButton>
+            </IconButton> */}
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              onClick={clearButtonHandler}
+            >
+              Clear
+            </Button>
           </Tooltip>
         </>
       )}

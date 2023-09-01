@@ -122,7 +122,7 @@ const DisplayBill = (props) => {
     let tempStr1 = [];
     let sum = 0;
     for (let i = 0, n = friends.length; i < n; i++) {
-      tempStr1.push("\n" + friends[i].friendName + " = ");
+      tempStr1.push("\n" + friends[i].friendName + " Bill = ");
       fBill[i].forEach((x, index) => {
         if (+x >= 0) {
           if (index === 0) tempStr1.push("$" + +x);

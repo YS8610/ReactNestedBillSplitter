@@ -4,11 +4,12 @@ import FriendForm from "./components/FriendForm";
 import DisplayBill from "./components/DisplayBill"
 import { useSelector } from "react-redux";
 import { Friend } from "./model";
+import { RootState } from "./store/indexStore";
 const logo = require("./logo.svg") as string;
 
 
 function App() {
-  const friends:Friend[] = useSelector((state:any) =>{
+  const friends:Friend[] = useSelector((state:RootState) =>{
     return state.friendsSlice;
   } );
 

@@ -11,7 +11,7 @@
     // "target": "es5", // specify ECMAScript target version
     // "moduleResolution": "node",
     "target": "ES2020",
-    "module": "ESNext",
+    "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["es6", "dom"],
     "noImplicitAny": true,

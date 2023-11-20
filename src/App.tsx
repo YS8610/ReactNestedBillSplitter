@@ -5,7 +5,6 @@ import DisplayBill from "./components/DisplayBill"
 import { useSelector } from "react-redux";
 import { Friend } from "./model";
 import { RootState } from "./store/indexStore";
-const logo = require("./logo.svg") as string;
 
 
 function App() {

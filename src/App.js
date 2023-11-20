@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import FriendForm from "./components/FriendForm";
 import DisplayBill from "./components/DisplayBill"

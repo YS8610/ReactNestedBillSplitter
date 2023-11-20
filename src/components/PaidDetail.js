@@ -5,7 +5,7 @@ import classes from "./paidDetail.module.css";
 import AddSharpIcon from "@mui/icons-material/AddSharp";
 import RemoveSharpIcon from "@mui/icons-material/RemoveSharp";
 import { IconButton, TextField, InputAdornment } from "@mui/material";
-import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
+import AttachMoneySharpIcon from "@mui/icons-material/AttachMoneySharp";
 
 const PaidDetail = (props) => {
   const dispatch = useDispatch();
@@ -70,74 +70,77 @@ const PaidDetail = (props) => {
             <th>Paid Amount</th>
             <th>Comment</th>
             <th>Operation</th>
-            <th>Exclude</th>
           </tr>
         </thead>
         <tbody>
           {friends[props.ind].paidInfo.map((row, index) => {
             return (
-              <tr>
-                {/* input for place */}
-                <td>
-                  <TextField
-                    variant="outlined"
-                    type="text"
-                    label="Place"
-                    id={"place" + props.ind + "_" + index}
-                    onChange={(e) => placeFormHandler(e, index)}
-                    value={row.place}
-                    data-index={index}
-                  />
-                </td>
-                {/* input for paid amount */}
-                <td>
-                  <TextField
-                    variant="filled"
-                    type="number"
-                    label="Paid Amount"
-                    id={"paidAmt" + props.ind + "_" + index}
-                    step=".01"
-                    onChange={(e) => paidAmtFormHandler(e, index)}
-                    value={row.paidAmt}
-                    data-index={index}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AttachMoneySharpIcon fontSize="small" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </td>
-                {/* input for comment */}
-                <td>
-                  <TextField
-                    variant="filled"
-                    type="text"
-                    label="Comment"
-                    id={"comment" + props.ind + "_" + index}
-                    onChange={(e) => commentFormHandler(e, index)}
-                    value={row.comment}
-                    data-index={index}
-                  />
-                </td>
-                <td>
-                  <IconButton onClick={addButtonHandler}>
-                    <AddSharpIcon />
-                  </IconButton>
-                  <span> </span>
-                  <IconButton
-                    onClick={removeButtonHandler}
-                    data-index={index}
-                    disabled={friends[props.ind].paidInfo.length <= 1}
-                  >
-                    <RemoveSharpIcon />
-                  </IconButton>
-                </td>
-                <td>
-                  <Exclude ind={props.ind} ind1={index} />
-                </td>
-              </tr>
+              <>
+                <tr>
+                  {/* input for place */}
+                  <td>
+                    <TextField
+                      variant="outlined"
+                      type="text"
+                      label="Place"
+                      id={"place" + props.ind + "_" + index}
+                      onChange={(e) => placeFormHandler(e, index)}
+                      value={row.place}
+                      data-index={index}
+                    />
+                  </td>
+                  {/* input for paid amount */}
+                  <td>
+                    <TextField
+                      variant="filled"
+                      type="number"
+                      label="Paid Amount"
+                      id={"paidAmt" + props.ind + "_" + index}
+                      step=".01"
+                      onChange={(e) => paidAmtFormHandler(e, index)}
+                      value={row.paidAmt}
+                      data-index={index}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AttachMoneySharpIcon fontSize="small" />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </td>
+                  {/* input for comment */}
+                  <td>
+                    <TextField
+                      variant="filled"
+                      type="text"
+                      label="Comment"
+                      id={"comment" + props.ind + "_" + index}
+                      onChange={(e) => commentFormHandler(e, index)}
+                      value={row.comment}
+                      data-index={index}
+                    />
+                  </td>
+                  <td>
+                    <IconButton onClick={addButtonHandler}>
+                      <AddSharpIcon />
+                    </IconButton>
+                    <span> </span>
+                    <IconButton
+                      onClick={removeButtonHandler}
+                      data-index={index}
+                      disabled={friends[props.ind].paidInfo.length <= 1}
+                    >
+                      <RemoveSharpIcon />
+                    </IconButton>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={4}>
+                    <Exclude ind={props.ind} ind1={index} />
+                  </td>
+                </tr>
+              </>
             );
           })}
         </tbody>
